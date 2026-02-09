@@ -39,7 +39,6 @@ public class TransferServiceImpl implements TransferService {
                 request.getFromAccountId(), request.getToAccountId(), request.getAmount());
 
         validateTransfer(request);
-        checkDuplicate(request.getIdempotencyKey());
 
         Account fromAccount = accountRepository.findById(request.getFromAccountId())
                 .orElseThrow(() -> new AccountNotFoundException(request.getFromAccountId()));
@@ -136,7 +135,6 @@ public class TransferServiceImpl implements TransferService {
         transactionLog.setAmount(request.getAmount());
         transactionLog.setStatus(status);
         transactionLog.setFailureReason(failureReason);
-        transactionLog.setIdempotencyKey(request.getIdempotencyKey());
 
         return transactionLog;
     }

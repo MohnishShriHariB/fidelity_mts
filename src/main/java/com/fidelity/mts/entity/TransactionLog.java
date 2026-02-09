@@ -60,6 +60,9 @@ public class TransactionLog {
         if (id == null) {
             id = UUID.randomUUID();
         }
+        if (idempotencyKey == null) {
+             idempotencyKey = UUID.randomUUID().toString();
+        }
         if (createdOn == null) {
             createdOn = LocalDateTime.now();
         }

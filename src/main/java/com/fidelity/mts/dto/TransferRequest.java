@@ -17,9 +17,6 @@ public class TransferRequest {
     @DecimalMin(value = "0.01", message = "Transfer amount must be at least 0.01")
     private BigDecimal amount;
     
-    @NotBlank(message = "Idempotency key is required")
-    private String idempotencyKey;
-    
     public TransferRequest() {
     }
     
@@ -27,7 +24,6 @@ public class TransferRequest {
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
         this.amount = amount;
-        this.idempotencyKey = idempotencyKey;
     }
     
     public Long getFromAccountId() {
@@ -53,15 +49,8 @@ public class TransferRequest {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    
-    public String getIdempotencyKey() {
-        return idempotencyKey;
-    }
-    
-    public void setIdempotencyKey(String idempotencyKey) {
-        this.idempotencyKey = idempotencyKey;
-    }
-    
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,13 +58,12 @@ public class TransferRequest {
         TransferRequest that = (TransferRequest) o;
         return Objects.equals(fromAccountId, that.fromAccountId) &&
                 Objects.equals(toAccountId, that.toAccountId) &&
-                Objects.equals(amount, that.amount) &&
-                Objects.equals(idempotencyKey, that.idempotencyKey);
+                Objects.equals(amount, that.amount);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(fromAccountId, toAccountId, amount, idempotencyKey);
+        return Objects.hash(fromAccountId, toAccountId, amount);
     }
     
     @Override
@@ -83,8 +71,7 @@ public class TransferRequest {
         return "TransferRequest{" +
                 "fromAccountId=" + fromAccountId +
                 ", toAccountId=" + toAccountId +
-                ", amount=" + amount +
-                ", idempotencyKey='" + idempotencyKey + '\'' +
+                ", amount=" + amount + '\'' +
                 '}';
     }
 }
