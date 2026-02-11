@@ -1,0 +1,32 @@
+<div class="screen-container">
+  <div class="header-banner">
+    <i class="fas fa-list"></i> Transaction History
+  </div>
+
+  <div class="transaction-list">
+    <div *ngFor="let tx of transactions" class="transaction-item">
+      <div class="icon-col">
+        <div class="tx-icon" [ngClass]="tx.type === 'DEBIT' ? 'debit' : 'credit'">
+          <i class="fas" [ngClass]="tx.type === 'DEBIT' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+        </div>
+      </div>
+      
+      <div class="details-col">
+        <span class="tx-desc">
+          {{ tx.type === 'DEBIT' ? 'Transfer to ID ' + tx.toAccountId : 'Received from ID ' + tx.fromAccountId }}
+        </span>
+        <span class="tx-date">{{ tx.createdOn | date:'medium' }}</span>
+      </div>
+
+      <div class="amount-col" [ngClass]="tx.type === 'DEBIT' ? 'red' : 'green'">
+        {{ tx.type === 'DEBIT' ? '-' : '+' }} ₹{{ tx.amount | number:'1.2-2' }}
+      </div>
+      
+      <div class="status-col">
+        <span class="badge" [ngClass]="tx.status === 'SUCCESS' ? 'success' : 'failed'">
+          {{ tx.status }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
