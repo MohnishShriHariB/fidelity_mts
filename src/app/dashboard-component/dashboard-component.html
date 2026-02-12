@@ -6,7 +6,7 @@
 
   <div class="balance-card">
     <span class="label">Available Balance</span>
-    <h1 class="amount">₹ {{ balance | number:'1.2-2' }}</h1>
+    <h1 class="amount">Rs. {{ balance | number:'1.2-2' }}</h1>
   </div>
 
   <div class="action-grid">
@@ -18,10 +18,10 @@
       <div class="icon-box"><i class="fas fa-history"></i></div>
       <span>History</span>
     </div>
-    <div class="action-item">
+<!--     <div class="action-item">
       <div class="icon-box"><i class="fas fa-user"></i></div>
       <span>Profile</span>
-    </div>
+    </div> -->
     <div class="action-item" (click)="logout()">
       <div class="icon-box"><i class="fas fa-sign-out-alt"></i></div>
       <span>Logout</span>

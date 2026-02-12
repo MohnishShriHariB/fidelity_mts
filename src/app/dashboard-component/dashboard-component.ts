@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth-service';
 import { AccountService } from '../account-service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +16,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -27,8 +30,8 @@ export class DashboardComponent implements OnInit {
   refreshBalance() {
     this.accountService.getBalance(this.user.id).subscribe({
       next: (data) => {
-        // Backend returns BigDecimal directly, not wrapped in an object
         this.balance = typeof data === 'number' ? data : Number(data);
+        this.cdRef.detectChanges();
         console.log('Balance loaded:', this.balance);
       },
       error: (err) => {

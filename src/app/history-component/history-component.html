@@ -33,7 +33,7 @@
       </div>
 
       <div class="amount-col" [ngClass]="tx.type === 'DEBIT' ? 'red' : 'green'">
-        {{ tx.type === 'DEBIT' ? '-' : '+' }} ₹{{ tx.amount | number:'1.2-2' }}
+        {{ tx.type === 'DEBIT' ? '-' : '+' }} {{ tx.amount | number:'1.2-2' }}
       </div>
       
       <div class="status-col">
