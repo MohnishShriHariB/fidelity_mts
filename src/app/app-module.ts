@@ -34,7 +34,6 @@ import { ProfileComponent } from './profile-component/profile-component';
       useClass : HttpinterceptorService,
       multi : true
     },
-    provideClientHydration(),
     provideHttpClient(withFetch(),),
     provideBrowserGlobalErrorListeners(),
     provideClientHydration(withEventReplay()),

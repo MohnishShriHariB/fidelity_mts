@@ -16,6 +16,10 @@
         <input type="password" formControlName="password" placeholder="Enter your password">
       </div>
 
+      <div *ngIf="errorMessage" class="alert error">
+        {{ errorMessage }}
+      </div>
+
       <button type="submit" [disabled]="loginForm.invalid || isLoading" class="btn-block">
         {{ isLoading ? 'Logging in...' : 'Login' }}
       </button>

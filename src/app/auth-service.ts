@@ -83,7 +83,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, switchMap } from 'rxjs/operators';
 
 interface Account {
   id: number;
@@ -113,25 +113,34 @@ export class AuthService {
     }
 
     // 2. Fetch Account and Validate Status
-    return this.http.get<Account>(`/api/v1/accounts/${accountId}`).pipe(
-      tap((account) => {
+    return this.http.get<any>(`/api/v1/accounts/${accountId}`).pipe(
+      
+      // FIX: Use switchMap to validate. tap cannot return streams.
+      switchMap((account) => {
         // CHECK: Block login if account is not active
         if (account.status === 'LOCKED') {
-          throw new Error('Account is Locked. Please contact support.');
+          return throwError(() => new Error('Account is Locked. Please contact support.'));
         }
         if (account.status === 'CLOSED') {
-          throw new Error('Account is Closed.');
+          return throwError(() => new Error('Account is Closed.'));
         }
+        
+        // IMPORTANT: If valid, return the account as an Observable to continue the chain
+        return of(account);
       }),
+
       tap((account) => {
-        // Only store if active
+        // Only store if active (we know it's active now because switchMap passed)
         if (this.isBrowser) {
           localStorage.setItem(this.currentUserKey, JSON.stringify(account));
         }
       }),
+      
       map(() => true),
+      
       catchError((err) => {
-        // Propagate our custom validation errors
+        // Propagate our custom validation errors (Locked/Closed)
+        // We check err.message directly first
         if (err.message && (err.message.includes('Locked') || err.message.includes('Closed'))) {
           return throwError(() => err);
         }
