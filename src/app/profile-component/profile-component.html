@@ -1,49 +1,69 @@
-<div class="profile-container">
-  
-  <div class="header-nav">
-    <a routerLink="/dashboard" class="back-btn">
-      <i class="fas fa-arrow-left"></i> Back
-    </a>
-  </div>
+<div class="mobile-container">
 
-  <div *ngIf="isLoading" class="loading-msg">
-    <i class="fas fa-spinner fa-spin"></i> Loading Profile...
-  </div>
-
-  <div *ngIf="errorMessage" class="error-msg">
-    {{ errorMessage }}
-  </div>
-
-  <div class="profile-card" *ngIf="!isLoading && user">
-    <div class="profile-header">
-      <div class="avatar">
-        <i class="fas fa-user"></i>
-      </div>
-      <h2>{{ user.holderName }}</h2>
-      <p>Savings Account</p>
-    </div>
-
-    <div class="profile-details">
-      <div class="detail-row">
-        <label>Account ID</label>
-        <span>{{ user.id }}</span>
-      </div>
-      
-      <div class="detail-row">
-        <label>Current Balance</label>
-        <span>Rs. {{ user.balance | number:'1.2-2' }}</span>
-      </div>
-      
-      <div class="detail-row">
-        <label>Status</label>
-        <span [class.status-active]="user.status === 'ACTIVE'">{{ user.status }}</span>
-      </div>
-
-<!--       <div class="detail-row">
-        <label>Last Updated</label>
-        <span>{{ user.lastUpdated | date:'medium' }}</span>
-      </div> -->
-    </div>
+  <div class="content-area">
     
+    <header class="app-bar">
+      <a routerLink="/dashboard" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+      <h3>My Profile</h3>
+      <div class="spacer"></div> </header>
+
+    <div *ngIf="isLoading" class="state-msg">
+      <i class="fas fa-spinner fa-spin"></i> Loading...
+    </div>
+
+    <div *ngIf="errorMessage" class="state-msg error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && user">
+      
+      <div class="profile-summary-card">
+        <div class="avatar-box">
+          <i class="fas fa-user"></i>
+        </div>
+        <h2 class="user-name">{{ user.holderName }}</h2>
+        <span class="acct-status" [class.status-active]="user.status === 'ACTIVE'">
+          {{ user.status }}
+        </span>
+      </div>
+
+      <div class="info-section">
+        <h4 class="section-title">Account Details</h4>
+        
+        <div class="info-item">
+          <div class="icon-wrapper"><i class="fas fa-fingerprint"></i></div>
+          <div class="info-text">
+            <span class="label">Account ID</span>
+            <span class="value">{{ user.id }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="icon-wrapper"><i class="fas fa-wallet"></i></div>
+          <div class="info-text">
+            <span class="label">Current Balance</span>
+            <span class="value">₹ {{ user.balance | number:'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="icon-wrapper"><i class="fas fa-university"></i></div>
+          <div class="info-text">
+            <span class="label">Account Type</span>
+            <span class="value">Savings Account</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" routerLink="/dashboard"><i class="fas fa-home"></i><span>Home</span></div>
+    <div class="nav-item" routerLink="/transfer"><i class="fas fa-money-bill-wave"></i><span>Transfer</span></div>
+    <div class="nav-item" routerLink="/history"><i class="fas fa-file-alt"></i><span>History</span></div>
+  </div>
+
 </div>

@@ -3,10 +3,12 @@
   align-items: center;
   justify-content: center;
   background-color: white;
+  min-height: 100vh; /* Ensures vertical centering on full screen */
 }
 
 .login-card {
   width: 85%;
+  max-width: 400px; /* Good practice to stop it from getting too wide on desktop */
   text-align: center;
 }
 
@@ -31,6 +33,31 @@ h2 {
   font-weight: 600;
 }
 
+/* --- New Alert Styles --- */
+.alert {
+  font-size: 12px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px; /* Matched to your inputs */
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box; /* Prevents padding from breaking width */
+  font-weight: 500;
+}
+
+.alert.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9; /* Optional: Adds a subtle border */
+}
+
+.alert.error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2; /* Optional: Adds a subtle border */
+}
+/* ------------------------ */
+
 .form-group {
   text-align: left;
   margin-bottom: 15px;
@@ -50,8 +77,9 @@ input {
   border: 1px solid #eee;
   background-color: #f9f9f9;
   font-size: 14px;
-  box-sizing: border-box; /* Crucial for width */
+  box-sizing: border-box;
   outline: none;
+  transition: all 0.3s ease;
 }
 
 input:focus {
@@ -71,7 +99,19 @@ input:focus {
   margin-top: 10px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+  transition: transform 0.1s;
 }
 
-.forgot-link { margin-top: 20px; }
-.forgot-link a { color: var(--text-gray); text-decoration: none; font-size: 12px; }
+.btn-block:active {
+  transform: scale(0.98);
+}
+
+.forgot-link {
+  margin-top: 20px;
+}
+
+.forgot-link a {
+  color: var(--text-gray);
+  text-decoration: none;
+  font-size: 12px;
+}
