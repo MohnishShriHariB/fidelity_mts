@@ -9,7 +9,7 @@
 
       <div class="card-body">
         <div class="sender-block">
-          <div class="avatar-circle">JS</div>
+          <div class="avatar-circle">{{ currentUser?.holderName[0] ||'JS'}}</div>
           <div class="sender-details">
             <span class="label">From: {{ currentUser?.holderName || 'John Smith' }}</span>
             <span class="sub">Account: XXXX-{{ currentUser?.id }} • Bal: {{currentUser?.balance}}</span>
@@ -36,10 +36,10 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Note (Optional)</label>
             <input type="text" class="input-box" placeholder="Add a note">
-          </div>
+          </div> -->
 
           <div *ngIf="message" [class]="'alert ' + message.type">{{ message.text }}</div>
 
