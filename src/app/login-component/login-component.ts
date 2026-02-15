@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth-service';
@@ -17,7 +17,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder, 
     private authService: AuthService, 
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       accountId: ['', Validators.required],
@@ -39,6 +40,7 @@ export class LoginComponent {
       error: (err) => {
         this.errorMessage = err.message || 'Login failed';
         this.isLoading = false;
+        this.cd.detectChanges();
       }
     });
   }

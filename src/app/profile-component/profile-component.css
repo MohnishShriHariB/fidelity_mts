@@ -1,0 +1,97 @@
+.profile-container {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  /* Matching the dashboard gradient */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.header-nav {
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.profile-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: #333;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: #f0f2f5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 2rem;
+  color: #764ba2;
+}
+
+.profile-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.detail-row label {
+  color: #666;
+  font-weight: 500;
+}
+
+.detail-row span {
+  font-weight: 600;
+  color: #333;
+}
+
+.status-active {
+  color: #28a745;
+}
+
+.loading-msg, .error-msg {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2rem;
+  color: white;
+}

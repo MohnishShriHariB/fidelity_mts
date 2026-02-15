@@ -8,75 +8,63 @@ import { AccountService } from '../account-service';
   standalone: false,
   styleUrls: ['./history-component.css']
 })
+
 export class HistoryComponent implements OnInit {
   transactions: any[] = [];
+  filteredTransactions: any[] = []; // List to display in UI
   currentUser: any;
   isLoading = false;
   error: string | null = null;
+  activeFilter: 'ALL' | 'SENT' | 'RECEIVED' = 'ALL';
 
   constructor(
     private authService: AuthService,
     private accountService: AccountService,
-    private cdRef: ChangeDetectorRef // Inject it here
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // 1. Try getting user from Service
-    this.currentUser = this.authService.getCurrentUser();
+    this.currentUser = this.authService.getCurrentUser() || 
+                       { id: localStorage.getItem('activeAccountId') };
 
-    // 2. FALLBACK: If service is empty (common on refresh), try LocalStorage directly
-    if (!this.currentUser) {
-      const storedId = localStorage.getItem('activeAccountId'); // Or 'accountID' based on your login logic
-      if (storedId) {
-        this.currentUser = { id: storedId, username: storedId };
-      }
-    }
-
-    // 3. Only load if we found a user
-    if (this.currentUser) {
+    if (this.currentUser?.id) {
       this.loadHistory();
     } else {
       this.error = 'No active user found. Please log in.';
-      this.cdRef.detectChanges(); // Update UI to show error immediately
     }
   }
 
   loadHistory() {
     this.isLoading = true;
-    this.error = null;
-    
-    // Force UI update to show "Loading..." spinner
-    this.cdRef.detectChanges(); 
-
     this.accountService.getTransactions(this.currentUser.id).subscribe({
       next: (data) => {
-        console.log('Transactions loaded:', data);
-        
         if (data && Array.isArray(data)) {
           this.transactions = data.map(tx => ({
             ...tx,
-            // Safe check for fromAccountId
+            // Logic: If I sent it, it's a DEBIT/SENT
             type: (tx.fromAccountId === this.currentUser.id) ? 'DEBIT' : 'CREDIT'
           }));
-        } else {
-          this.transactions = [];
+          this.applyFilter('ALL'); // Default view
         }
-
         this.isLoading = false;
-
-        // --- THE FIX IS HERE ---
-        // Manually trigger detection NOW that data is ready.
-        this.cdRef.detectChanges(); 
+        this.cdRef.detectChanges();
       },
-      error: (err) => {
-        console.error('Error loading transactions:', err);
+      error: () => {
         this.error = 'Failed to load transaction history';
-        this.transactions = [];
         this.isLoading = false;
-        
-        // Update UI to show error message
         this.cdRef.detectChanges();
       }
     });
+  }
+
+  applyFilter(type: 'ALL' | 'SENT' | 'RECEIVED') {
+    this.activeFilter = type;
+    if (type === 'ALL') {
+      this.filteredTransactions = this.transactions;
+    } else if (type === 'SENT') {
+      this.filteredTransactions = this.transactions.filter(tx => tx.type === 'DEBIT');
+    } else {
+      this.filteredTransactions = this.transactions.filter(tx => tx.type === 'CREDIT');
+    }
   }
 }

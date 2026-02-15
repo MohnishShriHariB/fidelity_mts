@@ -1,0 +1,107 @@
+/* Container resets */
+.mobile-container {
+  padding: 0; /* Important: No padding on the root */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f5f7fa;
+}
+
+/* Content Area handles the scrolling and padding */
+.content-area {
+  flex: 1; /* Takes all available space */
+  overflow-y: auto; /* Allows scrolling if form is long */
+}
+
+.p-20 { 
+  padding: 20px; 
+  padding-top: 40px; 
+}
+
+/* Card Styles */
+.card-wrapper {
+  background: white;
+  border-radius: 16px; /* var(--radius-lg) hardcoded for safety */
+  overflow: hidden; 
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+}
+
+.card-header-blue {
+  background-color: #1e88e5; /* var(--primary-blue) */
+  color: white;
+  padding: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-body { padding: 20px; }
+
+/* Sender Gray Block */
+.sender-block {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-circle {
+  width: 35px; height: 35px;
+  background: #1e88e5;
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: bold;
+}
+
+.sender-details { display: flex; flex-direction: column; }
+.sender-details .label { font-size: 13px; font-weight: 600; color: #333; }
+.sender-details .sub { font-size: 11px; color: #777; }
+
+.divider-arrow { text-align: center; margin: 10px 0; font-size: 12px; color: #1e88e5; }
+
+.form-group { margin-bottom: 15px; }
+label { display: block; font-size: 12px; color: #757575; margin-bottom: 5px; }
+
+.input-box {
+  width: 100%; padding: 12px; border: 1px solid #ddd;
+  border-radius: 6px; font-size: 14px; box-sizing: border-box;
+}
+
+/* Large Amount Input */
+.input-wrapper { position: relative; }
+.input-wrapper .curr { position: absolute; left: 12px; top: 12px; font-weight: bold; font-size: 16px; }
+.input-lg {
+  width: 100%; padding: 12px 12px 12px 30px;
+  border: 2px solid #1e88e5;
+  border-radius: 6px; font-size: 18px; font-weight: bold;
+  box-sizing: border-box;
+}
+
+.btn-green {
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+}
+
+.btn-text {
+  width: 100%; background: none; border: none;
+  color: #757575; padding: 10px; margin-top: 5px; cursor: pointer;
+}
+
+.alert { font-size: 12px; padding: 10px; margin-bottom: 10px; border-radius: 4px; text-align: center;}
+.alert.success { background: #e8f5e9; color: #2e7d32; }
+.alert.error { background: #ffebee; color: #c62828; }
+

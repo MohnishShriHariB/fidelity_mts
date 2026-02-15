@@ -3,6 +3,8 @@ import { AuthService } from '../auth-service';
 import { AccountService } from '../account-service';
 import { ChangeDetectorRef } from '@angular/core';
 
+import { PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,13 +19,20 @@ export class DashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private accountService: AccountService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    this.user = this.authService.getCurrentUser();
-    if (this.user) {
-      this.refreshBalance();
+    // this.user = this.authService.getCurrentUser();
+    // if (this.user) {
+    //   this.refreshBalance();
+    // }
+    if (isPlatformBrowser(this.platformId)) {
+      this.user = this.authService.getCurrentUser();
+      if (this.user) {
+        this.refreshBalance();
+      }
     }
   }
 

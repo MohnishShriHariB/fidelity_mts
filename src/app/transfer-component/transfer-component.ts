@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth-service';
 import { TransferService } from '../transfer-service';
+import { AccountService } from '../account-service';
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { TransferRequest } from '../models/transfer-request.interface';
@@ -17,11 +18,13 @@ export class TransferComponent implements OnInit {
   currentUser: any;
   isLoading = false;
   message: { type: string, text: string } | null = null;
+  recipientName: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private transferService: TransferService,
+    private accountService: AccountService,
     private router: Router
   ) {
     this.transferForm = this.fb.group({
@@ -33,6 +36,64 @@ export class TransferComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
   }
+
+   checkRecipient() {
+    const toId = this.transferForm.get('toAccountId')?.value;
+    
+    // Reset messages if empty
+    if (!toId) {
+      this.recipientName = null;
+      return;
+    }
+
+    // Don't check if it's the same as sender (validation handles that later, or we can catch here)
+    if (String(toId) === String(this.currentUser.id)) {
+      this.message = { type: 'error', text: 'You cannot transfer to your own account.' };
+      this.recipientName = null;
+      return;
+    }
+
+    this.isLoading = true; // Show small loading indication if desired
+    
+    this.accountService.getAccount(Number(toId)).subscribe({
+      next: (account) => {
+        this.isLoading = false;
+        
+        // CHECK: Is the account Locked/Closed?
+        if (account.status === 'LOCKED') {
+          this.message = { type: 'error', text: 'Recipient Account is LOCKED. Cannot transfer.' };
+          this.transferForm.get('toAccountId')?.setErrors({ 'locked': true });
+          this.recipientName = null;
+        } 
+        else if (account.status === 'CLOSED') {
+          this.message = { type: 'error', text: 'Recipient Account is CLOSED. Cannot transfer.' };
+          this.transferForm.get('toAccountId')?.setErrors({ 'closed': true });
+          this.recipientName = null;
+        } 
+        else if (account.status === 'INACTIVE') {
+          this.message = { type: 'error', text: 'Recipient Account is INACTIVE.' };
+          this.transferForm.get('toAccountId')?.setErrors({ 'inactive': true });
+          this.recipientName = null;
+        }
+        else {
+          // Valid Account
+          this.message = null; // Clear errors
+          this.recipientName = account.holderName; // Show name for confirmation
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.recipientName = null;
+        if (err.status === 404) {
+          this.message = { type: 'error', text: 'Account ID not found.' };
+          this.transferForm.get('toAccountId')?.setErrors({ 'notFound': true });
+        } else {
+          console.error(err);
+        }
+      }
+    });
+  }
+
 
   onSubmit() {
     if (this.transferForm.invalid) return;

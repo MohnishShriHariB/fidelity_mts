@@ -1,0 +1,52 @@
+<div class="profile-container">
+  
+  <div class="header-nav">
+    <a routerLink="/dashboard" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back
+    </a>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-msg">
+    <i class="fas fa-spinner fa-spin"></i> Loading Profile...
+  </div>
+
+  <div *ngIf="errorMessage" class="error-msg">
+    {{ errorMessage }}
+  </div>
+
+  <div class="profile-card" *ngIf="!isLoading && user">
+    <div class="profile-header">
+      <div class="avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h2>{{ user.holderName }}</h2>
+      <p>Savings Account</p>
+    </div>
+
+    <div class="profile-details">
+      <div class="detail-row">
+        <label>Account ID</label>
+        <span>{{ user.id }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <label>Current Balance</label>
+        <span>Rs. {{ user.balance | number:'1.2-2' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <label>Status</label>
+        <span [class.status-active]="user.status === 'ACTIVE'">{{ user.status }}</span>
+      </div>
+
+<!--       <div class="detail-row">
+        <label>Last Updated</label>
+        <span>{{ user.lastUpdated | date:'medium' }}</span>
+      </div> -->
+    </div>
+    
+    <button class="btn-primary" style="margin-top: 2rem; background: #dc3545;" (click)="logout()">
+      Logout
+    </button>
+  </div>
+</div>

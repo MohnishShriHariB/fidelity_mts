@@ -1,46 +1,52 @@
-<div class="screen-container">
-  <div class="header-banner">
-    <i class="fas fa-list"></i> Transaction History
-  </div>
+<div class="mobile-container">
+  
+  <div class="content-area">
+    <div class="card-wrapper">
+      <div class="card-header-blue">
+        <i class="fas fa-list-alt"></i> Transaction History
+      </div>
 
-  <div *ngIf="isLoading" class="loading-state">
-    <i class="fas fa-spinner fa-spin"></i> Loading transactions...
-  </div>
+      <div class="card-body">
+        <div class="pill-container">
+          <button [class.active]="activeFilter === 'ALL'" (click)="applyFilter('ALL')">All</button>
+          <button [class.active]="activeFilter === 'SENT'" (click)="applyFilter('SENT')">Sent</button>
+          <button [class.active]="activeFilter === 'RECEIVED'" (click)="applyFilter('RECEIVED')">Received</button>
+        </div>
 
-  <div *ngIf="error && !isLoading" class="error-state">
-    <i class="fas fa-exclamation-circle"></i> {{ error }}
-  </div>
+        <div *ngIf="isLoading" class="state-msg">Loading...</div>
+        <div *ngIf="error" class="state-msg error">{{error}}</div>
 
-  <div class="transaction-list" *ngIf="!isLoading && !error">
-    <div *ngIf="transactions.length === 0" class="empty-state">
-      <i class="fas fa-inbox"></i>
-      <p>No transactions found</p>
-      <span>Your transaction history will appear here once you make transfers.</span>
-    </div>
-    
-    <div *ngFor="let tx of transactions" class="transaction-item">
-      <div class="icon-col">
-        <div class="tx-icon" [ngClass]="tx.type === 'DEBIT' ? 'debit' : 'credit'">
-          <i class="fas" [ngClass]="tx.type === 'DEBIT' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+        <div class="tx-list" *ngIf="!isLoading">
+          <div *ngIf="filteredTransactions.length === 0" class="empty-msg">No transactions found.</div>
+          
+          <div *ngFor="let tx of filteredTransactions" class="tx-item">
+            <div class="tx-icon" [ngClass]="tx.type === 'DEBIT' ? 'bg-red' : 'bg-green'">
+              <i class="fas" [ngClass]="tx.type === 'DEBIT' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+            </div>
+            
+            <div class="tx-details">
+              <span class="tx-title">
+                {{ tx.type === 'DEBIT' ? 'Transfer to ' + tx.toAccountId : 'Received from ' + tx.fromAccountId }}
+              </span>
+              <span class="tx-date">{{ tx.createdOn | date:'MMM d, y • hh:mm a' }}</span>
+            </div>
+            
+            <div class="tx-meta">
+              <span class="tx-amount" [ngClass]="tx.type === 'DEBIT' ? 'text-red' : 'text-green'">
+                {{ tx.type === 'DEBIT' ? '-' : '+' }}₹{{ tx.amount | number:'1.2-2' }}
+              </span>
+              <span class="badge success">Success</span>
+            </div>
+          </div>
         </div>
       </div>
-      
-      <div class="details-col">
-        <span class="tx-desc">
-          {{ tx.type === 'DEBIT' ? 'Transfer to ID ' + tx.toAccountId : 'Received from ID ' + tx.fromAccountId }}
-        </span>
-        <span class="tx-date">{{ tx.createdOn | date:'medium' }}</span>
-      </div>
-
-      <div class="amount-col" [ngClass]="tx.type === 'DEBIT' ? 'red' : 'green'">
-        {{ tx.type === 'DEBIT' ? '-' : '+' }} {{ tx.amount | number:'1.2-2' }}
-      </div>
-      
-      <div class="status-col">
-        <span class="badge" [ngClass]="tx.status === 'SUCCESS' ? 'success' : 'failed'">
-          {{ tx.status }}
-        </span>
-      </div>
     </div>
   </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" routerLink="/dashboard"><i class="fas fa-home"></i><span>Home</span></div>
+    <div class="nav-item" routerLink="/transfer"><i class="fas fa-money-bill-wave"></i><span>Transfer</span></div>
+    <div class="nav-item active" routerLink="/history"><i class="fas fa-file-alt"></i><span>History</span></div>
+  </div>
+
 </div>
